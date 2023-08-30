@@ -10,12 +10,28 @@ var svg = d3.select("#my_dataviz")
   .attr("height", height + margin.top + margin.bottom)
 .append("g")
   .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-console.log("HERE")
 
 const promises = [
     d3.json('./data/miserables.annotated.edges.json'),
     d3.json('./data/miserables.nodes.json')
 ];
+
+function color(hop) {
+    switch (hop) {
+        case 0:
+            return 'black';
+        case 1:
+            return 'red';
+        case 2:
+            return 'blue';
+        case 3:
+            return 'turquoise';
+        case 4:
+            return 'pink';
+        case 5: 
+            return 'green';
+    }
+}
 
 Promise.all(promises).then(function(promisedData){
     data = {
@@ -36,8 +52,8 @@ Promise.all(promises).then(function(promisedData){
     .data(data.nodes)
     .enter()
     .append("circle")
-        .attr("r", 5)
-        .style("fill", "#69b3a2")
+        .attr("r", 4)
+        .style("fill", d => color(d.hop))
     console.log(data.nodes)
 
     // Let's list the force we wanna apply on the network
@@ -46,7 +62,7 @@ Promise.all(promises).then(function(promisedData){
             .id(function(d) { return d.id; })                     // This provide  the id of a node
             .links(data.links)                                    // and this the list of links
         )
-        .force("charge", d3.forceManyBody().strength(-100))         // This adds repulsion between nodes. Play with the -400 for the repulsion strength
+        .force("charge", d3.forceManyBody().strength(-50))         // This adds repulsion between nodes. Play with the -400 for the repulsion strength
         .force("center", d3.forceCenter(width / 2, height / 2))     // This force attracts nodes to the center of the svg area
         .on("end", ticked);
 
