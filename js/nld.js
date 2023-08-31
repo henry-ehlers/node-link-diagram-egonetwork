@@ -41,20 +41,27 @@ Promise.all(promises).then(function(promisedData){
     console.log(data);
 
     // Initialize the links
-    var link = svg.selectAll("line")
+    var link = svg.append('g')
+        .style("stroke", "#aaa")
+        .attr("stroke-opacity", 1)
+    .selectAll("line")
     .data(data.links)
     .enter()
     .append("line")
         .style("stroke", "#aaa")
+    console.log(data.links);
 
     // Initialize the nodes
-    var node = svg.selectAll("circle")
+    var node = svg.append('g')
+        .attr("stroke", "#fff")
+        .attr("stroke-width", 1.5)
+    .selectAll("circle")
     .data(data.nodes)
     .enter()
     .append("circle")
         .attr("r", 4)
-        .style("fill", d => color(d.hop))
-    console.log(data.nodes)
+        .style("fill", d => color(d.hop));
+    console.log(data.nodes);
 
     // Let's list the force we wanna apply on the network
     var simulation = d3.forceSimulation(data.nodes)                 // Force algorithm is applied to data.nodes
@@ -75,8 +82,8 @@ Promise.all(promises).then(function(promisedData){
         .attr("y2", function(d) { return d.target.y; });
 
     node
-        .attr("cx", function (d) { return d.x+2; })
-        .attr("cy", function(d) { return d.y-2; });
+        .attr("cx", function (d) { return d.x; })
+        .attr("cy", function(d) { return d.y; });
     }
 
 }).catch(function(error) {
