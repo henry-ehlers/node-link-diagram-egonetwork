@@ -1,3 +1,11 @@
+const dataset = "mouse.visual_cortex_1";
+const ego = "1";
+
+const promises = [
+    d3.json('./data/' + dataset + "." + ego + '.edges.json'),
+    d3.json('./data/' + dataset + "." + ego + '.nodes.json')
+];
+
 // set the dimensions and margins of the graph
 var margin = {top: 10, right: 10, bottom: 10, left: 10},
   width = 600 - margin.left - margin.right,
@@ -10,11 +18,6 @@ var svg = d3.select("#my_dataviz")
   .attr("height", height + margin.top + margin.bottom)
 .append("g")
   .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-
-const promises = [
-    d3.json('./data/miserables.annotated.edges.json'),
-    d3.json('./data/miserables.nodes.json')
-];
 
 function color(hop) {
     switch (hop) {
