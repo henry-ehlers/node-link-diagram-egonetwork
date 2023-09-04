@@ -102,6 +102,14 @@ Promise.all(promises).then(function(promisedData){
     node
         .attr("cx", function (d) { return d.x; })
         .attr("cy", function(d) { return d.y; });
+
+    buffer
+        .attr("cx", function (d) { return d.x; })
+        .attr("cy", function(d) { return d.y; });
+
+    text
+        .attr("x", function (d) { return d.x; })
+        .attr("y", function(d) { return d.y; });
     }
 
 }).catch(function(error) {
