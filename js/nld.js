@@ -1,5 +1,5 @@
-const dataset = "miserables";
-const ego = "Valjean";
+const dataset = "soc-firm-hi-tech";
+const ego = "10";
 
 const promises = [
     d3.json('./data/' + dataset + "." + ego + '.edges.json'),
@@ -75,6 +75,18 @@ Promise.all(promises).then(function(promisedData){
             .attr('class', 'node')
             .attr("r", 7)
             .style("stroke", d => color(d.hop))
+            
+    // Text
+    const text = svg.append('g')
+        .attr('class', 'node-text')
+        .style("text-anchor", "middle")
+        .style('dominant-baseline', 'central')
+        .style("font-size", "6pt")
+        .selectAll('text')
+        .data(data.nodes)
+        .enter()
+            .append('text')
+                .text(d => Math.floor(Math.random() * 99))
 
     // Let's list the force we wanna apply on the network
     var simulation = d3.forceSimulation(data.nodes)                 
