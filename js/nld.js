@@ -1,5 +1,5 @@
-const dataset = "soc-firm-hi-tech";
-const ego = "10";
+const dataset = "miserables";
+const ego = "Javert";
 
 const promises = [
     d3.json('./data/' + dataset + "." + ego + '.edges.json'),
@@ -7,9 +7,9 @@ const promises = [
 ];
 
 // set the dimensions and margins of the graph
-var margin = {top: 10, right: 10, bottom: 10, left: 10},
-  width = 1200 - margin.left - margin.right,
-  height = 1200 - margin.top - margin.bottom;
+var margin = {top: 1, right: 1, bottom: 1, left: 1};
+var width = 750 - margin.left - margin.right;
+var height = 750 - margin.top - margin.bottom;
 
 // append the svg object to the body of the page
 var svg = d3.select("#my_dataviz")
@@ -62,7 +62,7 @@ Promise.all(promises).then(function(promisedData){
         .enter()
         .append("circle")
             .attr('class', 'buffer')
-            .attr("r", 9);
+            .attr("r", 8);
             
     // Initialize the nodes
     const node = svg.append('g')
@@ -75,6 +75,8 @@ Promise.all(promises).then(function(promisedData){
             .attr('class', 'node')
             .attr("r", 7)
             .style("stroke", d => color(d.hop))
+            .style("fill", d => color(d.hop))
+            .style("opacity", 0.5)
             
     // Text
     const text = svg.append('g')
@@ -87,12 +89,13 @@ Promise.all(promises).then(function(promisedData){
         .enter()
             .append('text')
                 .text(d => Math.floor(Math.random() * 99))
+                //.text(d => d.id)
 
     // Let's list the force we wanna apply on the network
     var simulation = d3.forceSimulation(data.nodes)                 
         .force("link", 
             d3.forceLink()                               
-                //.strength(0.1)
+                .strength(0.25)
                 .id(d => d.id)                    
                 .links(data.links)                                  
         )
@@ -100,7 +103,9 @@ Promise.all(promises).then(function(promisedData){
             d3.forceManyBody()
             .strength(-200))         
         .force("center", 
-            d3.forceCenter(width / 2, height / 2))     
+            d3.forceCenter(
+                (width) / 2.0, 
+                (height) / 2.0))     
         .on("end", ticked);
 
     // This function is run at each iteration of the force algorithm, updating the nodes position.
