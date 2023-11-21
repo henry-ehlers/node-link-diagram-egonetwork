@@ -19,22 +19,37 @@ var svg = d3.select("#my_dataviz")
 .append("g")
   .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-function color(hop) {
+function color_fill(hop) {
+    switch (hop) {
+        case -1:
+            return 'black';
+        case 0:
+            return '#fc8d62';
+        case 1:
+            return '#a6cee3';
+        case 2:
+            return '#1f78b4';
+        case 3:
+            return '#b2df8a';
+        case 4:
+            return '#33a02c';
+    }
+}
+
+function color_stroke(hop) {
     switch (hop) {
         case -1:
             return 'black';
         case 0:
             return 'black';
         case 1:
-            return 'red';
+            return '#a6cee3';
         case 2:
-            return 'blue';
+            return '#1f78b4';
         case 3:
-            return 'turquoise';
+            return '#b2df8a';
         case 4:
-            return 'pink';
-        case 5: 
-            return 'green';
+            return '#33a02c';
     }
 }
 
@@ -51,7 +66,7 @@ Promise.all(promises).then(function(promisedData){
         .data(data.links)
         .enter()
         .append("line")
-            .style("stroke", d => color(d.hop))
+            .style("stroke", d => color_fill(d.hop))
             .style('stroke-width', d => d.weight);
 
     // Node Overlay (to space edges from nodes)
@@ -74,8 +89,8 @@ Promise.all(promises).then(function(promisedData){
         .append("circle")
             .attr('class', 'node')
             .attr("r", 7)
-            .style("stroke", d => color(d.hop))
-            .style("fill", d => color(d.hop))
+            .style("stroke", d => color_stroke(d.hop))
+            .style("fill", d => color_fill(d.hop))
             .style("opacity", 0.5)
             
     // Text
